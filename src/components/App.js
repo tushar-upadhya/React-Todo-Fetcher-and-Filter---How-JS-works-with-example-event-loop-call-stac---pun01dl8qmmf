@@ -1,36 +1,21 @@
-import React,{useState} from "react";
-
-const AddTodo = ({ dispatch }) => {
-
-    const [taskArr,setTaskArr] =useState([]);
-    const [inputVal,setVal] = useState("");
-    const [DateId,setId] = useState( new Date().getTime().toString());
-
-    function submitHandler (e) {
-        e.preventDefault();  
-        setId( new Date().getTime().toString()) ;
-        setTaskArr(
-            [...taskArr,
-                {id:DateId,title:inputVal}
-            ]
-        )
-        dispatch({type:"ADD",payload:{title:inputVal,id:DateId}});
-        setVal("");
-    }
-
-
-    function inputFun(e) {
-        setVal(e.target.value);
-    }
-
-    return (
-        <>
-        <form id="todo-form" onSubmit={submitHandler}>
-            <input id="todo-input" type="textarea" required onChange={inputFun} value={inputVal}/>
-            <button type="submit">submit</button>
-        </form>
-        </>
-    )
+import React, { useReducer } from 'react'
+import { todoReducer } from '../reducers/todo';
+import '../styles/App.css';
+import { AddTodo } from './AddTodo';
+import { Todo } from './Todo';
+const App = () => {
+  const [state,dispatch] = useReducer(todoReducer,[])
+  
+ 
+  return (
+    <div id="main">
+      <AddTodo dispatch={dispatch} state={state} />
+      <Todo dispatch={dispatch} state={state}/>
+     {/* Render list of Todo Components here */}
+    </div>
+  )
 }
 
-export { AddTodo }
+
+
+export default App;
